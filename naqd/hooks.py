@@ -4,6 +4,28 @@ app_publisher = "Ramees"
 app_description = "Task management for naqd"
 app_email = "ramees@enfono.in"
 app_license = "mit"
+doc_events = {
+    "Project": {
+        "after_insert": [
+            "naqd.task_hooks.set_custom_previous_links",
+            "naqd.task_hooks.create_auto_repeat_from_project"
+            "naqd.task_hooks.tag_project_created_by_auto_repeat"
+        ]
+        
+    },
+        "Task": {
+        "on_update": "naqd.task_hooks.on_task_update"
+    }
+}
+doc_events = {
+    "Project": {
+        "on_update": "naqd.project_hooks.create_sales_invoice_on_completion"
+    }
+}
+doctype_js = {
+    "Customer": "public/js/customer_dashboard.js"
+}
+
 
 # Apps
 # ------------------
