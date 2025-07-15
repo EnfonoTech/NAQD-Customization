@@ -52,19 +52,33 @@ def set_custom_previous_links(doc, method):
             frappe.db.set_value("Task", task.name, "custom_visible_to_user", 1)
 
 def on_task_update(doc, method):
-    """After a task is updated, check if it was completed. If yes, unhide the next task(s)."""
-    if doc.status != "Completed":
-        return
+    """After a task is updated, check if it was completed. If yes, unhide the next task(s).
+    Also, if all tasks in the project are completed, trigger sales invoice creation."""
+    
+    if doc.status == "Completed":
+        # Unhide next tasks
+        next_tasks = frappe.get_all("Task", filters={
+            "custom_previous_task": doc.name,
+            "project": doc.project
+        })
+        for task in next_tasks:
+            frappe.db.set_value("Task", task.name, "custom_visible_to_user", 1)
 
-    # Find next tasks that depend on this task
-    next_tasks = frappe.get_all("Task", filters={
-        "custom_previous_task": doc.name,
-        "project": doc.project  # optional safety filter
-    })
+        # Check if all project tasks are completed
+        if doc.project:
+            total = frappe.db.count("Task", {"project": doc.project})
+            completed = frappe.db.count("Task", {"project": doc.project, "status": "Completed"})
 
-    for task in next_tasks:
-        # Unhide the task for the user
-        frappe.db.set_value("Task", task.name, "custom_visible_to_user", 1)
+            if total and total == completed:
+                # Set project to Completed (if not already)
+                project_doc = frappe.get_doc("Project", doc.project)
+                if project_doc.status != "Completed":
+                    project_doc.status = "Completed"
+                    project_doc.save()
+
+                # Now trigger invoice
+                from naqd.project_hooks import create_sales_invoice_on_completion
+                create_sales_invoice_on_completion(project_doc, method="triggered_by_task")
 
 
 
