@@ -244,5 +244,5 @@
    "value": "[\"naming_series\", \"project_name\", \"status\", \"project_type\", \"is_active\", \"percent_complete_method\", \"percent_complete\", \"column_break_5\", \"project_template\", \"expected_start_date\", \"expected_end_date\", \"priority\", \"department\", \"custom_repeat_frequency\", \"custom_auto_repeat_info\", \"customer_details\", \"customer\", \"column_break_14\", \"sales_order\", \"users_section\", \"users\", \"copied_from\", \"section_break0\", \"notes\", \"section_break_18\", \"actual_start_date\", \"actual_time\", \"column_break_20\", \"actual_end_date\", \"project_details\", \"estimated_costing\", \"total_costing_amount\", \"total_purchase_cost\", \"company\", \"column_break_28\", \"total_sales_amount\", \"total_billable_amount\", \"total_billed_amount\", \"total_consumed_material_cost\", \"cost_center\", \"margin\", \"gross_margin\", \"column_break_37\", \"per_gross_margin\", \"monitor_progress\", \"collect_progress\", \"holiday_list\", \"frequency\", \"from_time\", \"to_time\", \"first_email\", \"second_email\", \"daily_time_to_send\", \"day_to_send\", \"weekly_time_to_send\", \"column_break_45\", \"message\", \"auto_repeat\"]"
   }
  ],
- "sync_on_migrate": 0
+ "sync_on_migrate": 1
 }
