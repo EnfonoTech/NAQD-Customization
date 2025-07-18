@@ -81,9 +81,14 @@ def on_task_update(doc, method):
                 create_sales_invoice_on_completion(project_doc, method="triggered_by_task")
 
 
-
 def create_auto_repeat_from_project(doc, method):
     frequency = doc.get("custom_repeat_frequency")
+    # Set auto-repeat info in project
+    created_date = getdate(doc.creation or today())
+    month_name = calendar.month_name[created_date.month]
+    info = f"{month_name} {created_date.year} ({frequency or 'One Time'})"
+    frappe.db.set_value("Project", doc.name, "custom_auto_repeat_info", info)    
+
     if not frequency or frequency == "One Time":
         return  # Don't create Auto Repeat
     if frappe.db.exists("Auto Repeat", {"reference_name": doc.name, "reference_doctype": "Project"}):
@@ -96,12 +101,6 @@ def create_auto_repeat_from_project(doc, method):
     auto_repeat.frequency = frequency
     auto_repeat.start_date = today()
     auto_repeat.submit()
-
-    # Set auto-repeat info in project
-    created_date = getdate(doc.creation or today())
-    month_name = calendar.month_name[created_date.month]
-    info = f"{month_name} {created_date.year} ({frequency})"
-    frappe.db.set_value("Project", doc.name, "custom_auto_repeat_info", info)
 
 def tag_project_created_by_auto_repeat(doc, method):
     """Set custom_auto_repeat_info if project was created via Auto Repeat."""

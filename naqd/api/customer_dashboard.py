@@ -34,24 +34,42 @@ def get_customer_dashboard(customer):
 
         # Step 6: Return the dashboard HTML
         html = f"""
-        <div class="custom-customer-dashboard" style="display: flex; gap: 20px; margin-bottom: 20px;">
-            <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
-                <div><strong style="font-size: 18px;">{status_counts['Open']}</strong>   <medium>Ongoing Projects</medium></div>
-            </div>
-            <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
-                <div><strong style="font-size: 18px;">{status_counts['Cancelled']}</strong>  <medium>Cancelled Projects</medium></div>
-            </div>
-            <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
-                <div><strong style="font-size: 18px;">{status_counts['Completed']}</strong>  <medium>Completed Projects</medium></div>
-            </div>
-            <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
-                <div><strong style="font-size: 18px;">{unbilled_projects}</strong>   <medium>Unbilled Projects</medium></div>
-            </div>
-            <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
-                <div><strong style="font-size: 18px;">₹{flt(balance, 2):,.2f}</strong>   <medium>Ledger Balance</medium></div>
-            </div>
+        <div class="custom-customer-dashboard" style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
+            
+            <a href="/app/project?customer={customer}&status=Open" style="text-decoration: none; color: inherit;">
+                <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
+                    <strong style="font-size: 18px;">{status_counts['Open']}</strong> <medium>Ongoing Projects</medium>
+                </div>
+            </a>
+
+            <a href="/app/project?customer={customer}&status=Cancelled" style="text-decoration: none; color: inherit;">
+                <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
+                    <strong style="font-size: 18px;">{status_counts['Cancelled']}</strong> <medium>Cancelled Projects</medium>
+                </div>
+            </a>
+
+            <a href="/app/project?customer={customer}&status=Completed" style="text-decoration: none; color: inherit;">
+                <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
+                    <strong style="font-size: 18px;">{status_counts['Completed']}</strong> <medium>Completed Projects</medium>
+                </div>
+            </a>
+
+            <a href="/app/sales-invoice?customer={customer}&status=Draft" style="text-decoration: none; color: inherit;">
+                <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
+                    <strong style="font-size: 18px;">{unbilled_projects}</strong> <medium>Unbilled Projects</medium>
+                </div>
+            </a>
+
+            <a href="/app/query-report/General Ledger?party_type=Customer&party={customer}" style="text-decoration: none; color: inherit;">
+                <div style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; min-width: 180px;">
+                    <strong style="font-size: 18px;">₹{flt(balance, 2):,.2f}</strong> <medium>Ledger Balance</medium>
+                </div>
+            </a>
+
         </div>
         """
+
+
         return html
 
     except Exception as e:
