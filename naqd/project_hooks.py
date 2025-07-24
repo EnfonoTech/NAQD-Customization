@@ -28,3 +28,5 @@ def create_sales_invoice_on_completion(doc, method):
 
 
     frappe.msgprint(f"Draft Sales Invoice <b>{invoice.name}</b> created.")
+
+
