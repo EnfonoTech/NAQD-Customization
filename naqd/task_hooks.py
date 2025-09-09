@@ -94,7 +94,7 @@ def on_task_update(doc, method):
 
             if total and total == completed:
                 # Set project to Completed (if not already)
-                project_doc = frappe.get_doc("Project", doc.name)
+                project_doc = frappe.get_doc("Project", doc.project)
                 if project_doc.status != "Completed":
                     project_doc.status = "Completed"
                     project_doc.save()
